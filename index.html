@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineCrítica - Avaliações do Cinema Brasileiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="logo" onclick="irPara('home')"><span class="logo-cine">Cine</span><span class="logo-critica">Crítica</span></div>
+    <nav class="nav-links" id="nav-links">
+      <a href="#" class="nav-link ativo" data-page="home">Início</a>
+      <a href="#" class="nav-link" data-page="filmes">Filmes</a>
+      <a href="#" class="nav-link" data-page="reviews">Reviews</a>
+      <a href="#" class="nav-link" data-page="listas">Listas</a>
+      <a href="#" class="nav-link" data-page="membros">Membros</a>
+    </nav>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth">
+        <button class="btn-nav-login" onclick="abrirLoginNav()">Login</button>
+        <button class="btn-nav-cadastro" onclick="abrirCadastroNav()">Cadastrar-se</button>
+      </div>
+      <div class="nav-logado escondido" id="nav-logado">
+        <span class="nav-usuario" id="nav-usuario"></span>
+        <button class="avatar avatar-nav" id="btn-avatar-nav" onclick="clicarAvatar()" title="Perfil">
+          <span id="avatar-nav-letra">?</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="page-home" class="page ativa">
+  <div class="boas-vindas">
+    <h2 class="saudacao-home" id="saudacao-home"></h2>
+    <p class="texto-boas-vindas" id="texto-boas-vindas"></p>
+  </div>
+  <h2 class="titulo-secao"><i class="fa-solid fa-star"></i> Recomendados</h2>
+  <p class="sub-secao">Seis filmes brasileiros que você precisa assistir pelo menos uma vez</p>
+  <div id="grid-recomendados" class="grid-filmes"></div>
+
+  <h2 class="titulo-secao secao-segunda"><i class="fa-solid fa-trophy"></i> Filmes Premiados</h2>
+  <p class="sub-secao">Grandes sucessos de crítica e de festivais do cinema nacional</p>
+  <div id="grid-premiados" class="grid-premiados"></div>
+
+  <h2 class="titulo-secao secao-segunda"><i class="fa-solid fa-clock-rotate-left"></i> Avaliados Recentemente</h2>
+  <p class="sub-secao">As últimas críticas publicadas pela comunidade</p>
+  <div id="feed-recentes" class="feed-reviews compacto"></div>
+</section>
+
+<section id="page-filmes" class="page">
+  <div class="cabecalho-catalogo">
+    <h2 class="titulo-secao">Catálogo Brasileiro</h2>
+    <p class="sub-secao">Busque por título, diretor ou elenco e refine pelos filtros</p>
+  </div>
+  <div class="barra-busca">
+    <div class="caixa-busca">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="input-busca" placeholder="Buscar por título, diretor ou elenco...">
+    </div>
+    <div class="caixa-filtro">
+      <i class="fa-solid fa-masks-theater"></i>
+      <select id="filtro-genero">
+        <option value="todos">Todos os gêneros</option>
+      </select>
+    </div>
+    <div class="caixa-filtro">
+      <i class="fa-solid fa-calendar-days"></i>
+      <select id="filtro-decada">
+        <option value="todos">Todas as décadas</option>
+        <option value="2020">Anos 2020</option>
+        <option value="2010">Anos 2010</option>
+        <option value="2000">Anos 2000</option>
+        <option value="1990">Anos 1990</option>
+        <option value="1980">Anos 1980</option>
+        <option value="1970">Anos 1970</option>
+        <option value="classicos">Clássicos</option>
+      </select>
+    </div>
+    <div class="caixa-filtro">
+      <i class="fa-solid fa-arrow-down-wide-short"></i>
+      <select id="filtro-ordem">
+        <option value="padrao">Ordem padrão</option>
+        <option value="az">Título A-Z</option>
+        <option value="za">Título Z-A</option>
+        <option value="ano-desc">Ano (mais recentes)</option>
+        <option value="ano-asc">Ano (mais antigos)</option>
+        <option value="genero">Gênero</option>
+        <option value="diretor">Diretor</option>
+      </select>
+    </div>
+  </div>
+  <p class="contador-filtros" id="contador-filmes"></p>
+  <div id="grid-filmes" class="grid-filmes"></div>
+</section>
+
+<section id="page-filme" class="page">
+  <button class="btn-voltar" id="btn-voltar-filme" onclick="voltarDeFilme()"><i class="fa-solid fa-arrow-left"></i> Voltar ao catálogo</button>
+  <div id="filme-conteudo"></div>
+</section>
+
+<section id="page-reviews" class="page">
+  <div class="topo-reviews">
+    <div>
+      <h2 class="titulo-secao">Todas as Avaliações</h2>
+      <p class="sub-secao sem-margem" id="contador-reviews"></p>
+    </div>
+    <div class="caixa-filtro">
+      <i class="fa-solid fa-arrow-down-wide-short"></i>
+      <select id="filtro-reviews">
+        <option value="recentes">Mais Recentes</option>
+        <option value="antigas">Mais Antigas</option>
+        <option value="maior">Maior Nota</option>
+        <option value="menor">Menor Nota</option>
+      </select>
+    </div>
+  </div>
+  <div id="feed-reviews" class="feed-reviews"></div>
+</section>
+
+<section id="page-listas" class="page">
+  <div class="topo-pagina">
+    <div>
+      <h2 class="titulo-secao">Listas da Comunidade</h2>
+      <p class="sub-secao sem-margem">Listas temáticas montadas pelos membros do CineCrítica</p>
+    </div>
+    <button class="btn btn-verde btn-acao-topo" onclick="abrirNovaLista()"><i class="fa-solid fa-plus"></i> Criar Nova Lista</button>
+  </div>
+  <div id="grid-listas" class="grid-listas"></div>
+</section>
+
+<section id="page-lista" class="page">
+  <button class="btn-voltar" onclick="irPara('listas')"><i class="fa-solid fa-arrow-left"></i> Voltar às Listas</button>
+  <div id="lista-conteudo"></div>
+</section>
+
+<section id="page-membros" class="page">
+  <div class="topo-membros">
+    <h2 class="titulo-secao">Membros</h2>
+    <div class="caixa-busca busca-topo">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="input-busca-membro" placeholder="Buscar membro por usuário...">
+    </div>
+  </div>
+  <div id="lista-membros" class="lista-membros"></div>
+</section>
+
+<section id="page-sobre" class="page">
+  <div class="sobre-topo">
+    <h2 class="titulo-secao titulo-centro titulo-sobre">Sobre Nós</h2>
+    <p class="sobre-intro">O CineCrítica é um tributo ao cinema nacional, desenvolvido no Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte (IFRN) - Campus Santa Cruz, para a disciplina de Programação para Internet (PPI), pela turma INFO3V. O projeto reúne informações de 50 filmes brasileiros e permite avaliar, curtir, comentar e montar listas junto com a comunidade.</p>
+  </div>
+
+  <div class="sobre-secao">
+    <h3 class="titulo-secao-bloco">Professor Orientador</h3>
+    <div class="grid-professor">
+      <div class="card-dev">
+        <div class="avatar avatar-grande dev-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <h4>Hadley Magno da Costa Siqueira</h4>
+        <span class="dev-info">Professor Orientador</span>
+        <span class="dev-info">Disciplina de Programação para Internet (PPI)</span>
+        <span class="dev-info">IFRN - Campus Santa Cruz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sobre-secao">
+    <h3 class="titulo-secao-bloco">Desenvolvedores - INFO3V</h3>
+    <div class="grid-dev">
+      <div class="card-dev">
+        <div class="avatar avatar-grande dev-avatar">EA</div>
+        <h4>Eduardo Alexandre do Nascimento</h4>
+        <a class="dev-link" href="https://github.com/edunascc" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> edunascc</a>
+        <a class="dev-link" href="mailto:alexandre.eduardo@escolar.ifrn.edu.br"><i class="fa-solid fa-envelope"></i> alexandre.eduardo@escolar.ifrn.edu.br</a>
+      </div>
+      <div class="card-dev">
+        <div class="avatar avatar-grande dev-avatar">FF</div>
+        <h4>Felipe Fernandes Maia</h4>
+        <a class="dev-link" href="https://github.com/felipehhhhh" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> felipehhhhh</a>
+        <a class="dev-link" href="mailto:maia.fernandes1@escolar.ifrn.edu.br"><i class="fa-solid fa-envelope"></i> maia.fernandes1@escolar.ifrn.edu.br</a>
+      </div>
+      <div class="card-dev">
+        <div class="avatar avatar-grande dev-avatar">KS</div>
+        <h4>Kauê Dmitri Santos Silva</h4>
+        <a class="dev-link" href="https://github.com/kaue0781" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> kaue0781</a>
+        <a class="dev-link" href="mailto:kaue.s@escolar.ifrn.edu.br"><i class="fa-solid fa-envelope"></i> kaue.s@escolar.ifrn.edu.br</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="page-perfil" class="page">
+  <div id="perfil-conteudo"></div>
+</section>
+
+<section id="page-login" class="page">
+  <div class="login-centro">
+    <div class="login-box">
+      <h2 class="login-titulo">CineCrítica</h2>
+      <p class="login-sub">Entre para avaliar, curtir e montar suas listas de filmes nacionais.</p>
+      <div class="login-tabs">
+        <button class="tab-login ativo" id="tab-entrar" onclick="mudarForm('entrar')">Entrar</button>
+        <button class="tab-login" id="tab-cadastrar" onclick="mudarForm('cadastrar')">Criar Conta</button>
+      </div>
+      <div id="form-entrar" class="form-box">
+        <label for="login-user">Usuário ou e-mail</label>
+        <input type="text" id="login-user" placeholder="Seu usuário ou e-mail">
+        <label for="login-senha">Senha</label>
+        <div class="campo-senha">
+          <input type="password" id="login-senha" placeholder="Sua senha">
+          <button type="button" class="btn-olho" onclick="mostrarSenha('login-senha', this)" title="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <button class="btn btn-verde btn-full" onclick="fazerLogin()">Entrar</button>
+      </div>
+      <div id="form-cadastrar" class="form-box escondido">
+        <label for="cad-nome">Nome completo</label>
+        <input type="text" id="cad-nome" placeholder="Seu nome">
+        <label for="cad-user">Nome de usuário</label>
+        <input type="text" id="cad-user" placeholder="ex: joao_cinefilo">
+        <label for="cad-email">E-mail</label>
+        <input type="email" id="cad-email" placeholder="voce@email.com">
+        <label for="cad-senha">Senha</label>
+        <div class="campo-senha">
+          <input type="password" id="cad-senha" placeholder="Mínimo 4 caracteres">
+          <button type="button" class="btn-olho" onclick="mostrarSenha('cad-senha', this)" title="Mostrar senha"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <button class="btn btn-verde btn-full" onclick="fazerCadastro()">Criar Conta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-texto">Feito por brasileiros para brasileiros.</span>
+    <a href="#" class="footer-link" onclick="irPara('sobre'); return false;">Sobre Nós</a>
+    <a class="footer-github" href="https://github.com/edunascc/CineCritica" target="_blank" rel="noopener" title="Repositório do projeto no GitHub"><i class="fa-brands fa-github"></i></a>
+  </div>
+</footer>
+
+<div class="modal escondido" id="modal-avaliar">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Avaliar / Registrar</h3>
+      <button class="btn-fechar" onclick="fecharAvaliar()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-filme" id="modal-filme-nome"></p>
+      <label>Sua nota</label>
+      <div class="seletor-estrelas" id="seletor-estrelas">
+        <button type="button" class="star-btn" data-nota="1"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-nota="2"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-nota="3"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-nota="4"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-nota="5"><i class="fa-regular fa-star"></i></button>
+      </div>
+      <label>Atalhos rápidos</label>
+      <div class="atalhos">
+        <button type="button" class="atalho-btn" id="modal-btn-visto" onclick="atalhoRegistrar('vistos')"><i class="fa-solid fa-eye"></i><span>Visto</span></button>
+        <button type="button" class="atalho-btn" id="modal-btn-curtido" onclick="atalhoRegistrar('curtidos')"><i class="fa-solid fa-heart"></i><span>Curtir</span></button>
+        <button type="button" class="atalho-btn" id="modal-btn-reassistido" onclick="atalhoRegistrar('reassistidos')"><i class="fa-solid fa-rotate-right"></i><span>Reassistir</span></button>
+      </div>
+      <button type="button" class="btn btn-azul btn-full btn-add-lista-modal" onclick="abrirAdicionarLista(filme_em_avaliacao)"><i class="fa-solid fa-list"></i> Adicionar a uma Lista</button>
+      <label for="texto-review">Sua crítica (opcional)</label>
+      <textarea id="texto-review" rows="4" placeholder="O que você achou do filme? Pode deixar em branco."></textarea>
+      <label for="frase-destaque">Destacar uma frase/fala do filme (opcional)</label>
+      <input type="text" id="frase-destaque" placeholder="Escreva a fala que marcou você">
+      <label class="check-spoiler" for="check-spoiler">
+        <input type="checkbox" id="check-spoiler">
+        <span>Contém Spoiler</span>
+      </label>
+      <button class="btn btn-verde btn-full" onclick="salvarReview()">Salvar Registro</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal escondido" id="modal-lista">
+  <div class="modal-box modal-wide">
+    <div class="modal-header">
+      <h3 id="modal-lista-topo">Criar Nova Lista</h3>
+      <button class="btn-fechar" onclick="fecharNovaLista()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <label for="lista-titulo">Título da lista</label>
+      <input type="text" id="lista-titulo" placeholder="Ex: Melhores do Cinema Novo">
+      <label for="lista-descricao">Descrição</label>
+      <textarea id="lista-descricao" rows="3" placeholder="Do que se trata essa lista?"></textarea>
+      <label for="busca-lista-filme">Buscar e adicionar filme...</label>
+      <div class="busca-dropdown">
+        <div class="caixa-busca">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="busca-lista-filme" placeholder="Buscar e adicionar filme..." autocomplete="off" oninput="renderDropdownLista()" onblur="fecharDropdownLista()">
+        </div>
+        <div class="dropdown-resultados escondido" id="dropdown-lista"></div>
+      </div>
+      <label>Navegar pelo catálogo</label>
+      <div class="galeria-lista" id="galeria-lista"></div>
+      <p class="contador-filtros" id="contador-lista-filmes"></p>
+      <div class="grid-selecionados" id="selecionados-lista"></div>
+      <button class="btn btn-verde btn-full" onclick="salvarListaUsuario()">Salvar Lista</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal escondido" id="modal-perfil">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Editar Perfil</h3>
+      <button class="btn-fechar" onclick="fecharEditarPerfil()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <label for="edit-nome">Nome</label>
+      <input type="text" id="edit-nome" placeholder="Seu nome">
+      <label for="edit-usuario">Username</label>
+      <input type="text" id="edit-usuario" placeholder="seu_usuario">
+      <label for="edit-bio">Bio</label>
+      <textarea id="edit-bio" rows="3" placeholder="Fale um pouco sobre você e o seu gosto para cinema"></textarea>
+      <p class="modal-filme">Top 5 Filmes Favoritos</p>
+      <div class="fav-selecionados" id="favoritos-selecionados"></div>
+      <label for="busca-favorito">Buscar e adicionar filme...</label>
+      <div class="caixa-busca busca-favoritos">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="busca-favorito" placeholder="Buscar e adicionar filme..." autocomplete="off" oninput="renderSelecaoFavoritos()">
+      </div>
+      <p class="contador-filtros" id="contador-favoritos"></p>
+      <div class="lista-selecao-filmes" id="lista-selecao-filmes"></div>
+      <button class="btn btn-verde btn-full" onclick="salvarPerfilEdicao()">Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal escondido" id="modal-add-lista">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Adicionar a uma Lista</h3>
+      <button class="btn-fechar" onclick="fecharAdicionarLista()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-filme" id="add-lista-filme"></p>
+      <label for="add-lista-select">Escolha uma de suas listas</label>
+      <div class="caixa-filtro select-filtro-lista">
+        <i class="fa-solid fa-border-all"></i>
+        <select id="add-lista-select"></select>
+      </div>
+      <p class="dica-select" id="add-lista-vazio"></p>
+      <button class="btn btn-verde btn-full" onclick="adicionarFilmeLista()">Adicionar à Lista</button>
+      <button class="btn btn-azul btn-full" onclick="criarListaComFilme()">Criar Nova Lista</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
